@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dark body{
+  background-color: #1E293B;
+}
+.scrollable-no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+
+.scrollable-no-scrollbar {
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+* {
+  font-family: 'Satoshi', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+
+/* Custom Pagination Styles */
+.pagination-custom .MuiPaginationItem-root {
+  color: black; /* Default for light mode */
+  border-color: gray; /* Light mode border color */
+}
+
+/* For dark mode */
+.dark .pagination-custom .MuiPaginationItem-root {
+  color: white; /* Default for dark mode */
+  border-color: #555; /* Dark mode border color */
+}
+
+/* Selected item styles for dark mode */
+.dark .pagination-custom .Mui-selected {
+  background-color: rgba(255, 255, 255, 0.16); /* Dark mode selected background */
+  color: white; /* Dark mode selected text color */
+}
+
+/* route change animation */
+
+.fade-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 200ms, transform 200ms;
+} 
+
+
+/* styles.css */
+:root {
+  --background-color: #ffffff; /* Light theme */
+  --text-color: #000000; /* Light theme */
+}
+
+.dark-theme {
+  --background-color: #333333; /* Dark theme */
+  --text-color: #ffffff; /* Dark theme */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+
+
+
+/* .fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 900ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 900ms;
+} */
+
+
