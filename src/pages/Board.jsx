@@ -199,7 +199,6 @@ const Board = () => {
   );
 };
 
-
 function StoreList({
   name,
   items,
@@ -403,8 +402,7 @@ function StoreList({
                       >
                         <path
                           fill-rule="evenodd"
-                          d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.
-                          06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                          d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
                           clip-rule="evenodd"
                         ></path>
                       </svg>
@@ -483,49 +481,48 @@ function StoreList({
                   ref={provided.innerRef}
                 >
                   <div className="text-sm font-medium">{item.name}</div>
-            <div className="flex justify-between items-center">
-            <div className="flex gap-2 items-center">
-              <Checkbox
-                sx={{
-                  padding: 0,
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 18,
-                  },
-                }}
-                defaultChecked
-              />
-              <div
-                className={`text-xs font-medium ${
-                  currentTheme === "dark"
-                    ? "text-gray-300"
-                    : "text-gray-600"
-                } ${
-                  id ===
-                  "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"
-                    ? "line-through"
-                    : ""
-                }`}
-              >
-                DEMO-1
-              </div>
-            </div>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-[#F1AF3C] hover:opacity-80 transition-opacity duration-200"
-            >
-              <path
-                d="M18 9L6 9M18 15L6 15"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-             </div>
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-2 items-center">
+                      <Checkbox
+                        sx={{
+                          padding: 0,
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 18,
+                          },
+                        }}
+                        defaultChecked
+                      />
+                      <div
+                        className={`text-xs font-medium ${
+                          currentTheme === "dark"
+                            ? "text-gray-300"
+                            : "text-gray-600"
+                        } ${
+                          id === "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"
+                            ? "line-through"
+                            : ""
+                        }`}
+                      >
+                        DEMO-1
+                      </div>
+                    </div>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="text-[#F1AF3C] hover:opacity-80 transition-opacity duration-200"
+                    >
+                      <path
+                        d="M18 9L6 9M18 15L6 15"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
               );
             }}
           >

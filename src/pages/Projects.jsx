@@ -58,7 +58,7 @@ const Projects = () => {
           theme === "dark"
             ? "dark:bg-slate-800 dark:text-gray-200"
             : "bg-white text-black "
-        } mt-4`}
+        } pt-4`}
       >
         {/* dark:bg-slate-800 dark:text-gray-200 */}
         <div className="flex justify-between items-center mb-2">

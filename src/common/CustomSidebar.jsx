@@ -42,10 +42,10 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
       <div
         className={`${
           open ? "w-60" : "w-0"
-        } ${theme === 'dark' ? 'bg-[#0C192A] text-white' : 'bg-[#F7FAFF] text-black'} h-screen p-5 pt-6 relative duration-300`}
+        } ${theme === 'dark' ? 'bg-[#0C192A] text-white' : 'bg-[#F7FAFF] text-black'} h-screen p-5 pt-6 relative `}
       >
         <div
-          className={`absolute cursor-pointer -right-7 top-4 w-10 h-10 text-[24px] rounded-full flex justify-center items-center transition-transform`}
+          className={`absolute cursor-pointer -right-7 top-4 w-10 h-10 text-[24px] rounded-full flex justify-center items-center  `}
           onClick={() => setOpen(!open)}
         >
           <FaBars />
@@ -63,7 +63,7 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
             <div key={index} className={`${!open && "hidden"}`}>
               <Link
                 to="/"
-                className={`flex items-center p-2 mt-2 rounded-lg transition-colors duration-300 
+                className={`flex items-center p-2 mt-2 rounded-lg 
                             ${theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-white'}`}
               >
                 <div className="text-xl flex justify-center items-center">
@@ -82,7 +82,7 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                   {currentProjects.map((project, idx) => (
                     <div
                       key={idx}
-                      className={`familychange mt-2 px-3 py-[15px] rounded-lg cursor-pointer transition-colors duration-300 text-[14px] font-bold
+                      className={`familychange mt-2 px-3 py-[15px] rounded-lg cursor-pointer  duration-300 text-[14px] font-bold
                         ${internalSelectedProject === project
                           ? (theme === 'dark' ? 'bg-blue-700' : 'bg-[#133280] text-white') // Selected background
                           : (theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-gray-100') // Hover state
@@ -101,7 +101,7 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                   {allProjects.map((project, idx) => (
                     <div
                       key={idx}
-                      className={`familychange mt-2 p-2 rounded-lg cursor-pointer transition-colors duration-300 text-[14px] 
+                      className={`familychange mt-2 p-2 rounded-lg cursor-pointer  text-[14px] 
                         ${theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-gray-100'}`} // Hover state
                       onClick={() => handleProjectClick(project)}
                     >
