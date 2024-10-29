@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useParams, useSearchParams } from "react-router-dom";
 import { initialProjects } from "../utils/constant";
 import { FixedSizeList as List } from "react-window";
+import ScrollContainer from "react-indiana-drag-scroll"; // Adjust the import according to your setup
 
 const Board = () => {
   const [searchParams] = useSearchParams();
@@ -31,29 +32,21 @@ const Board = () => {
   useEffect(() => {
     const saveToLocalStorage = (data) => {
       try {
-        // Check current storage size
         const currentSize = new Blob(Object.values(localStorage)).size;
-
-        // Calculate the size of new data
         const newSize = new Blob([JSON.stringify(data)]).size;
-
-        // If current size + new data size exceeds 5MB (approx)
         if (currentSize + newSize > 5 * 1024 * 1024) {
-          // Implement cleanup logic here if needed, for example:
-          localStorage.removeItem(`project-${projectId}`); // Remove older data
-          // Optionally, you can implement a more sophisticated cleanup strategy.
+          localStorage.removeItem(`project-${projectId}`);
         }
 
         localStorage.setItem(`project-${projectId}`, JSON.stringify(data));
       } catch (error) {
         console.error("Error saving to local storage", error);
-        // Optionally handle the error (e.g., show a notification)
       }
     };
-
     saveToLocalStorage(stores);
   }, [stores, projectId]);
 
+  // Handle the Logic of Drag and Drop
   const handleDragAndDrop = (results) => {
     const { source, destination, type } = results;
 
@@ -215,6 +208,7 @@ function StoreList({
   const [newTask, setNewTask] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentName, setCurrentName] = useState(name);
+  
 
   // Inside StoreList component:
   const handleNameClick = () => {
@@ -347,6 +341,8 @@ function StoreList({
     setNewTask("");
     setSelectedColumnIndex(null);
   };
+
+  
 
   return (
     <div>
@@ -530,11 +526,11 @@ function StoreList({
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="h-[520px] flex flex-col px-2"
+                className="flex flex-col h-[520px] px-2"
               >
                 {selectedColumnIndex === items.length && (
                   <div
-                    className={`mb-3 border shadow-md p-4 rounded-lg mx-2 transition-all duration-200  ${
+                    className={`mb-3 border shadow-md p-4 rounded-lg mx-2 transition-all duration-200 ${
                       currentTheme === "dark"
                         ? "bg-[#324370] border-gray-600"
                         : "border-gray-100 bg-white"
@@ -588,14 +584,14 @@ function StoreList({
                 )}
 
                 <div
-                  className={`flex-1  rounded-lg  ${
+                  className={`flex-1 rounded-lg  ${
                     currentTheme === "dark"
                       ? "border-gray-500"
                       : "border-[#e5e7eb]"
                   }`}
                 >
                   <List
-                    className="scrollable-no-scrollbar overflow-y-scroll "
+                    className="overflow-y-scroll"
                     height={520}
                     itemCount={items.length}
                     itemSize={95} // Increased to accommodate margins
@@ -611,7 +607,7 @@ function StoreList({
                         >
                           {(provided, snapshot) => (
                             <div
-                              className={` my-2 border shadow-md p-4 break-all rounded-lg cursor-pointer transition-all duration-200 ${
+                              className={`my-2 border shadow-md p-4 break-all rounded-lg cursor-pointer transition-all duration-200 ${
                                 snapshot.isDragging ? "shadow-lg" : ""
                               } ${
                                 currentTheme === "dark"
@@ -625,7 +621,6 @@ function StoreList({
                                 ...style,
                                 ...provided.draggableProps.style,
                                 height: "auto", // Allow content to determine height
-                                // padding: "8px 0", // Add vertical padding for spacing
                               }}
                             >
                               <div className="text-sm font-medium mb-3">
