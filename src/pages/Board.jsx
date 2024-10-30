@@ -127,7 +127,7 @@ const Board = () => {
 
   return (
     <div
-      className={`p-3 flex overflow-scroll scrollable-no-scrollbar  ${
+      className={`p-3 flex  scrollable-no-scrollbar  ${
         currentTheme === "dark" ? "bg-[#0C192A] text-white" : "bg-white"
       }`}
     >
@@ -162,8 +162,8 @@ const Board = () => {
                     {(provided) => (
                       <div
                         {...provided.draggableProps}
-                        ref={provided.innerRef}
                         {...provided.dragHandleProps}
+                        ref={provided.innerRef}
                         className={storeClassName}
                       >
                         <StoreList
@@ -208,7 +208,6 @@ function StoreList({
   const [newTask, setNewTask] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentName, setCurrentName] = useState(name);
-  
 
   // Inside StoreList component:
   const handleNameClick = () => {
@@ -341,8 +340,6 @@ function StoreList({
     setNewTask("");
     setSelectedColumnIndex(null);
   };
-
-  
 
   return (
     <div>

@@ -2,9 +2,10 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './App.css'; 
 import Header from './pages/Header';
-import Projects from './pages/projects';
 import DragDrop from './pages/DragDrop';
 import Board from './pages/Board';
+import Projects from './pages/Projects';
+import NewDrag from './pages/NewDrag';
 
 function App() {
   const location = useLocation();
@@ -25,7 +26,10 @@ function App() {
           <Routes location={location}>
             <Route path="/" element={<Projects />} />
             <Route path='/CurrentProject/:name/:id' element={<DragDrop />} />
-            <Route path='/Board/:id' element={<Board />} />
+            {/* <Route path='/Board/:id' element={<Board />} /> */}
+            <Route path='/Board/:id' element={<NewDrag />} />
+
+
           </Routes>
         </CSSTransition>
       </TransitionGroup>
