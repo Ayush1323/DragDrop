@@ -127,7 +127,7 @@ const Board = () => {
 
   return (
     <div
-      className={`p-3 flex  scrollable-no-scrollbar  ${
+      className={`p-3 flex overflow-scroll scrollable-no-scrollbar  ${
         currentTheme === "dark" ? "bg-[#0C192A] text-white" : "bg-white"
       }`}
     >
@@ -149,7 +149,7 @@ const Board = () => {
                           : "border-gray-200 bg-[#F1F2F4]"
                       }`
                 }`;
-
+                
                 return (
                   <Draggable
                     draggableId={store.id}

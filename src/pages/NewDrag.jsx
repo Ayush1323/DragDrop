@@ -200,37 +200,12 @@ function StoreList({ name, items, id }) {
 
 
   return (
-    <Droppable
-    droppableId={id}
-    mode="virtual"
-    renderClone={(provided, snapshot, rubric) => {
-      const item = items[rubric.source.index];
-      return (
-        <div
-            {...provided.dragHandleProps}
-            {...provided.draggableProps}
-            ref={provided.innerRef}
-            className="bg-white p-2 mb-2 rounded shadow flex items-center justify-between w-[350px]"
-          >
-            <span>{item.name}</span>
-            <Checkbox
-              sx={{
-                padding: 0,
-                "& .MuiSvgIcon-root": {
-                  fontSize: 18,
-                },
-              }}
-              defaultChecked
-            />
-          </div>
-      );
-    }}
-  >
+    <Droppable droppableId={id}>
       {(provided) => (
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
-          className="h-[520px] overflow-auto scrollable-no-scrollbar  "
+          className="h-[520px] overflow-auto"
         >
           {isEditing ? (
             <div className="relative ">
@@ -280,7 +255,7 @@ function StoreList({ name, items, id }) {
             </div>
           ) : (
             <h3
-              className={`flex justi items-center font-semibold capitalize text-[16px] my-1  whitespace-nowrap ${
+              className={`flex  items-center font-semibold capitalize text-[16px] my-1  whitespace-nowrap ${
                 id === "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"
                   ? ""
                   : "cursor-pointer"
@@ -294,16 +269,32 @@ function StoreList({ name, items, id }) {
               {currentName}
             </h3>
           )}
-           <List
-            height={520} // Adjust the height as needed
-            itemCount={items.length}
-            itemSize={50} // Adjust the height of each item as needed
-            width={"100%"}
-            className="mt-2 overflow-auto"
-          >
-            {Row}
-          </List>
+          <div className="mt-2">
+            {items.map((item, index) => (
+              <Draggable draggableId={item.id} index={index} key={item.id}>
+                {(provided) => (
+                  <div
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    className="bg-white p-2 mb-2 rounded shadow flex items-center justify-between w-[350px]"
+                  >
+                    <span>{item.name}</span>
+                    <Checkbox
+                      sx={{
+                        padding: 0,
+                        "& .MuiSvgIcon-root": {
+                          fontSize: 18,
+                        },
+                      }}
+                      defaultChecked
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
+          </div>
         </div>
       )}
     </Droppable>

@@ -19,7 +19,7 @@ function DragDrop() {
     // Add message listener for iframe communication
     const handleMessage = (event) => {
       // Verify the origin for security
-      if (event.origin !== "http://localhost:5175") return;
+      if (event.origin !== "http://localhost:5173") return;
       
       if (event.data.type === "resize") {
         setIframeHeight(`${event.data.height}px`);
@@ -73,7 +73,7 @@ function DragDrop() {
           <div className="pr-4 pt-2 flex-1 overflow-hidden">
             <div className="h-full relative">
               <iframe
-                src={`http://localhost:5175/Board/${selectedProject.id}?theme=${theme}`}
+                src={`http://localhost:5173/Board/${selectedProject.id}?theme=${theme}`}
                 className={`rounded-3xl shadow-lg w-full ${
                   theme === 'dark' 
                     ? "bg-[#060606] border-gray-500" 

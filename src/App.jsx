@@ -26,8 +26,8 @@ function App() {
           <Routes location={location}>
             <Route path="/" element={<Projects />} />
             <Route path='/CurrentProject/:name/:id' element={<DragDrop />} />
-            {/* <Route path='/Board/:id' element={<Board />} /> */}
-            <Route path='/Board/:id' element={<NewDrag />} />
+            <Route path='/Board/:id' element={<Board />} />
+            {/* <Route path='/Board/:id' element={<NewDrag />} /> */}
 
 
           </Routes>
@@ -36,5 +36,5 @@ function App() {
     </div>
   );
 }
-
+   
 export default App;
