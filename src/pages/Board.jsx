@@ -15,6 +15,11 @@ const Board = () => {
   const project = initialProjects.find((proj) => proj.id === projectId);
   const [collapsedStores, setCollapsedStores] = useState({});
 
+  const [stores, setStores] = useState(() => {
+    const storedData = localStorage.getItem(`project-${projectId}`);
+    return storedData ? JSON.parse(storedData) : project.data;
+  });
+
   useEffect(() => {
     const theme = searchParams.get("theme");
     setCurrentTheme(theme);
@@ -23,11 +28,6 @@ const Board = () => {
   if (!project) {
     return <div>Project not found!</div>;
   }
-
-  const [stores, setStores] = useState(() => {
-    const storedData = localStorage.getItem(`project-${projectId}`);
-    return storedData ? JSON.parse(storedData) : project.data;
-  });
 
   useEffect(() => {
     const saveToLocalStorage = (data) => {
@@ -46,17 +46,12 @@ const Board = () => {
     saveToLocalStorage(stores);
   }, [stores, projectId]);
 
-  // Handle the Logic of Drag and Drop
   const handleDragAndDrop = (results) => {
     const { source, destination, type } = results;
 
     if (!destination) return;
 
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    )
-      return;
+    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
     if (type === "group") {
       const newStores = stores.filter(
@@ -64,15 +59,12 @@ const Board = () => {
       );
 
       const [removedStore] = newStores.splice(source.index, 1);
-
       const fixedStoreIndex = stores.findIndex(
         (store) => store.id === "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"
       );
 
       if (destination.index >= fixedStoreIndex) {
-        toast.error("Closed issue list position cannot be changed.", {
-          duration: 2000,
-        });
+        toast.error("Closed issue list position cannot be changed.", { duration: 2000 });
         return;
       }
 
@@ -127,9 +119,9 @@ const Board = () => {
 
   return (
     <div
-      className={`p-3 flex overflow-scroll scrollable-no-scrollbar  ${
+      className={`p-3 flex overflow-scroll scrollable-no-scrollbar ${
         currentTheme === "dark" ? "bg-[#0C192A] text-white" : "bg-white"
-      }`}
+      } ${project ? "fadeIn" : ""}`}
     >
       <DragDropContext onDragEnd={handleDragAndDrop}>
         <Droppable droppableId="ROOT" type="group" direction="horizontal">
@@ -140,7 +132,7 @@ const Board = () => {
               className="flex gap-4"
             >
               {stores.map((store, index) => {
-                const storeClassName = `rounded-[8px] flex flex-col  ${
+                const storeClassName = `rounded-[8px] flex flex-col ${
                   isCollapsed(store.id)
                     ? "bg-none"
                     : ` border border-t-0  w-[350px]  ${
@@ -149,15 +141,13 @@ const Board = () => {
                           : "border-gray-200 bg-[#F1F2F4]"
                       }`
                 }`;
-                
+
                 return (
                   <Draggable
                     draggableId={store.id}
                     index={index}
                     key={store.id}
-                    isDragDisabled={
-                      store.id === "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"
-                    }
+                    isDragDisabled={store.id === "d9c3f4e8-ec62-4631-a0a0-3742c1e83967"}
                   >
                     {(provided) => (
                       <div
@@ -171,9 +161,7 @@ const Board = () => {
                           stores={stores}
                           setStores={setStores}
                           isCollapsed={isCollapsed(store.id)}
-                          onToggleCollapse={() =>
-                            handleToggleCollapse(store.id)
-                          }
+                          onToggleCollapse={() => handleToggleCollapse(store.id)}
                           currentTheme={currentTheme}
                         />
                       </div>
@@ -181,7 +169,6 @@ const Board = () => {
                   </Draggable>
                 );
               })}
-
               {provided.placeholder}
             </div>
           )}
@@ -588,7 +575,7 @@ function StoreList({
                   }`}
                 >
                   <List
-                    className="overflow-y-scroll"
+                    className="overflow-y-scroll scrollable-no-scrollbar"
                     height={520}
                     itemCount={items.length}
                     itemSize={95} // Increased to accommodate margins

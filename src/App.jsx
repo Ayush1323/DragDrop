@@ -10,26 +10,25 @@ import NewDrag from './pages/NewDrag';
 function App() {
   const location = useLocation();
   
-  // Check if the current path is either '/' or '/CurrentProject/:name/:id'
-  const showHeader = location.pathname === '/' || location.pathname.startsWith('/CurrentProject');
+  // Set a condition to show the Header only on specific routes
+  const showHeader = location.pathname === '/' || location.pathname.includes('/CurrentProject');
 
   return (
     <div>
       <TransitionGroup>
         {/* Conditionally render the Header based on the route */}
-        {showHeader && < Header/>}
+        {showHeader && <Header />}
         <CSSTransition
           key={location.key}
           classNames="fade"
-          timeout={300} // Duration of the animation in milliseconds
+          timeout={300}
+          unmountOnExit
         >
           <Routes location={location}>
             <Route path="/" element={<Projects />} />
             <Route path='/CurrentProject/:name/:id' element={<DragDrop />} />
             <Route path='/Board/:id' element={<Board />} />
             {/* <Route path='/Board/:id' element={<NewDrag />} /> */}
-
-
           </Routes>
         </CSSTransition>
       </TransitionGroup>

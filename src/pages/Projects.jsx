@@ -52,7 +52,8 @@ const Projects = () => {
   };
 
   return (
-    <div>
+    
+    <div className="fadeOut">
       <div
         className={`px-9 pb-9  mx-auto  ${
           theme === "dark"
@@ -110,11 +111,11 @@ const Projects = () => {
                     {project.name.charAt(0)}
                   </div>
                   <div className="ml-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 ">
                       <Link
                         to={`/CurrentProject/${project.name}/${project.id}`}
                       >
-                        <h3 className="hover:underline cursor-pointer text-base ">
+                        <h3 className="hover:underline cursor-pointer text-[14px] ">
                           {project.name}
                         </h3>
                       </Link>
@@ -127,7 +128,7 @@ const Projects = () => {
                         onClick={() => handleRating(project.id)}
                       />
                     </div>
-                    <p className="text-gray-500 text-sm">{project.tag}</p>
+                    <p className="text-gray-500 text-[12px]">{project.tag}</p>
                   </div>
                 </div>
                 <div className="text-sm text-gray-500">
@@ -156,7 +157,7 @@ const Projects = () => {
                         <Link
                           to={`/CurrentProject/${project.name}/${project.id}`}
                         >
-                          <h3 className="hover:underline cursor-pointer text-base ">
+                          <h3 className="hover:underline cursor-pointer text-base text-[14px]">
                             {project.name}
                           </h3>
                         </Link>
@@ -169,7 +170,7 @@ const Projects = () => {
                           onClick={() => handleRating(project.id)}
                         />
                       </div>
-                      <p className="text-gray-500 text-sm">{project.tag}</p>
+                      <p className="text-gray-500 text-[12px]">{project.tag}</p>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500">

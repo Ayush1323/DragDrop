@@ -40,31 +40,6 @@
   color: white; /* Dark mode selected text color */
 }
 
-/* route change animation */
-
-.fade-enter {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-
-.fade-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 200ms, transform 200ms;
-}
-
-.fade-exit {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.fade-exit-active {
-  opacity: 0;
-  transform: translateX(100%);
-  transition: opacity 200ms, transform 200ms;
-} 
-
-
 /* styles.css */
 :root {
   --background-color: #ffffff; /* Light theme */
@@ -84,26 +59,31 @@ body {
 }
 
 
-
-
-
-
-/* .fade-enter {
-  opacity: 0;
+.fadeIn {
+  animation: fadeIn 0.3s ease-out;
 }
 
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 900ms;
+@keyframes fadeIn {
+  from {
+    transform: translateX(-2%); 
+  }
+  to {
+    transform: translateX(0);
+
+  }
 }
 
-.fade-exit {
-  opacity: 1;
+.fadeOut {
+  animation: fadeOut 0.3s ease-out;
+  /* Optionally, set the width to 90% for the initial display */
+  overflow: hidden; /* To hide the part outside the container */
 }
 
-.fade-exit-active {
-  opacity: 0;
-  transition: opacity 900ms;
-} */
-
-
+@keyframes fadeOut {
+  from {
+    transform: translateX(10%); /* Start from the right side, completely off-screen */
+  }
+  to {
+    transform: translateX(0); /* End at the original position */
+  }
+}

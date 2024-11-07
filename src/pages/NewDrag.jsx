@@ -7,6 +7,7 @@ import { initialProjects } from "../utils/constant";
 import { FixedSizeList as List } from "react-window";
 import ScrollContainer from "react-indiana-drag-scroll"; // Adjust the import according to your setup
 import { ThemeContext } from "./ThemeContext";
+import { Virtuoso } from "react-virtuoso";
 import { useContext } from "react";
 
 const NewDrag = () => {

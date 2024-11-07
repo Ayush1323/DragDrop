@@ -9,7 +9,8 @@ import { ThemeContext } from "../pages/ThemeContext";
 const CustomSidebar = ({ selectedProject, onSelectProject }) => {
   const { theme } = useContext(ThemeContext); // Get the current theme from context
   const [open, setOpen] = useState(true);
-  const [internalSelectedProject, setInternalSelectedProject] = useState(selectedProject);
+  const [internalSelectedProject, setInternalSelectedProject] =
+    useState(selectedProject);
 
   useEffect(() => {
     setInternalSelectedProject(selectedProject);
@@ -38,24 +39,33 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
   );
 
   return (
-    <div className="flex justify-center items-start">
+    <div className="flex justify-center items-start ">
       <div
-        className={`${
-          open ? "w-60" : "w-0"
-        } ${theme === 'dark' ? 'bg-[#0C192A] text-white' : 'bg-[#F7FAFF] text-black'} h-screen p-5 pt-6 relative `}
+        className={`${open ? "w-60" : "w-0 "} ${
+          theme === "dark"
+            ? "bg-[#0C192A] text-white"
+            : "bg-[#F4F6F8] text-black"
+        } h-screen p-5 pt-6 relative `}
+        style={{
+          transition: "width 0.5s ease",
+        }}
       >
         <div
-          className={`absolute cursor-pointer -right-7 top-4 w-10 h-10 text-[24px] rounded-full flex justify-center items-center  `}
+          className={`absolute cursor-pointer -right-7 top-3.5 w-10 h-10 text-[24px] rounded-full flex justify-center items-center  `}
           onClick={() => setOpen(!open)}
         >
           <FaBars />
         </div>
-        
-        <div className={`flex items-center gap-x-4 ${!open && "hidden"}`}>
-          <AutoAwesomeMotionIcon />
-          <h1 className={`font-semibold text-2xl duration-200 ${!open && "hidden"}`}>
+
+        <div className={`flex items-center text-md ${!open && "hidden"}`}>
+          <img src="https://staging-tasks.mindinventory.net/static/media/mindInventoryLogo.140c672d.svg" alt="" />
+          <div
+            className={`font-semibold duration-200 ml-1.5  ${
+              !open && "hidden"
+            }`}
+          >
             Tasks
-          </h1>
+          </div>
         </div>
 
         <div className="mt-6">
@@ -63,8 +73,12 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
             <div key={index} className={`${!open && "hidden"}`}>
               <Link
                 to="/"
-                className={`flex items-center p-2 mt-2 rounded-lg 
-                            ${theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-white'}`}
+                className={`flex items-center py-2 mt-2 rounded-lg 
+                            ${
+                              theme === "dark"
+                                ? "hover:bg-blue-950"
+                                : "hover:bg-white"
+                            }`}
               >
                 <div className="text-xl flex justify-center items-center">
                   {menu.icon}
@@ -82,10 +96,15 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                   {currentProjects.map((project, idx) => (
                     <div
                       key={idx}
-                      className={`familychange mt-2 px-3 py-[15px] rounded-lg cursor-pointer  duration-300 text-[14px] font-bold
-                        ${internalSelectedProject === project
-                          ? (theme === 'dark' ? 'bg-blue-700' : 'bg-[#133280] text-white') // Selected background
-                          : (theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-gray-100') // Hover state
+                      className={`familychange mt-2 px-3 py-2 rounded-lg cursor-pointer  duration-300 text-[14px] font-bold
+                        ${
+                          internalSelectedProject === project
+                            ? theme === "dark"
+                              ? "bg-blue-700"
+                              : "bg-[#133280] text-white" // Selected background
+                            : theme === "dark"
+                            ? "hover:bg-blue-950"
+                            : "hover:bg-gray-100" // Hover state
                         }`}
                       onClick={() => handleProjectClick(project)}
                     >
@@ -94,7 +113,6 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                   ))}
                 </div>
               </div>
-
               <div className="mt-4">
                 <div className="text-[16px] font-semibold">All Projects</div>
                 <div>
@@ -102,7 +120,11 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                     <div
                       key={idx}
                       className={`familychange mt-2 p-2 rounded-lg cursor-pointer  text-[14px] 
-                        ${theme === 'dark' ? 'hover:bg-blue-950' : 'hover:bg-gray-100'}`} // Hover state
+                        ${
+                          theme === "dark"
+                            ? "hover:bg-blue-950"
+                            : "hover:bg-gray-100"
+                        }`} // Hover state
                       onClick={() => handleProjectClick(project)}
                     >
                       {project.name}
