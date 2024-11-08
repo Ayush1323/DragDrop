@@ -7,6 +7,7 @@ import CommonPagination from "../common/Pagination";
 import { PER_PAGE_OPTIONS, initialProjects } from "../utils/constant";
 import { ThemeContext } from "../pages/ThemeContext"; // Import ThemeContext
 import Header from "./Header";
+import DailyAllocation from "./DailyAllocation";
 
 const Projects = () => {
   const [page, setPage] = useState(1);
@@ -55,111 +56,71 @@ const Projects = () => {
   return (
     <div>
       <Header />
-    <div className="fadeOut">
-      <div
-        className={`px-9 pb-9  mx-auto  ${
-          theme === "dark"
-            ? "dark:bg-slate-800 dark:text-gray-200"
-            : "bg-white text-black "
-        } pt-4`}
-      >
-        {/* dark:bg-slate-800 dark:text-gray-200 */}
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-[20px] font-semibold  ">Projects</h3>
-        </div>
+      <div className="fadeOut">
+        <div
+          className={`px-9 pb-9  mx-auto  ${
+            theme === "dark"
+              ? "dark:bg-slate-800 dark:text-gray-200"
+              : "bg-white text-black "
+          } pt-4`}
+        >
+          {/* dark:bg-slate-800 dark:text-gray-200 */}
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-[20px] font-semibold  ml-4 ">Projects</h3>
+          </div>
 
-        <TabContext value={selectedTab}>
-          <Box>
-            <TabList onChange={handleTabChange}>
-              <Tab
-                label={`Your Projects (${projects.length})`}
-                value="1"
-                sx={{
-                  textTransform: "none",
-                  color: theme === "dark" ? "white" : "black", // Apply color based on theme
-                }}
-              />
+          <TabContext value={selectedTab}>
+            <Box>
+              <TabList onChange={handleTabChange}>
+                <Tab
+                  label={`Your Projects (${projects.length})`}
+                  value="1"
+                  sx={{
+                    textTransform: "none",
+                    color: theme === "dark" ? "white" : "black", // Apply color based on theme
+                  }}
+                />
 
-              <Tab
-                label={`Favorite Projects (${favoriteProjects.length})`}
-                value="2"
-                sx={{
-                  textTransform: "none",
-                  color: theme === "dark" ? "white" : "black", // Apply color based on theme
-                }}
-              />
-              <Tab
-                label="Daily Allocation (0)"
-                value="3"
-                sx={{
-                  textTransform: "none",
-                  color: theme === "dark" ? "white" : "black", // Apply color based on theme
-                }}
-              />
-            </TabList>
-          </Box>
+                <Tab
+                  label={`Favorite Projects (${favoriteProjects.length})`}
+                  value="2"
+                  sx={{
+                    textTransform: "none",
+                    color: theme === "dark" ? "white" : "black", // Apply color based on theme
+                  }}
+                />
+                <Tab
+                  label="Daily Allocation"
+                  value="3"
+                  sx={{
+                    textTransform: "none",
+                    color: theme === "dark" ? "white" : "black", // Apply color based on theme
+                  }}
+                />
+              </TabList>
+            </Box>
 
-          {/* Tab for All Projects */}
-          <TabPanel value="1" sx={{ p: 0 }}>
-            {paginatedProjects.map((project) => (
-              <div
-                className={`flex items-center justify-between p-3 border-b   transition-all ${theme === 'dark' ?"border-gray-700":"border-gray-300"}`} 
-                key={project.id}
-              >
-                <div className="flex items-center">
-                  <div
-                    className={`text-[24px] w-10 h-10 flex justify-center items-center text-black  rounded-md ${project.color}`} 
-                  >
-                    {project.name.charAt(0)}
-                  </div>
-                  <div className="ml-3">
-                    <div className="flex items-center gap-2 ">
-                      <Link
-                        to={`/CurrentProject/${project.name}/${project.id}`}
-                      >
-                        <h3 className="hover:underline cursor-pointer text-[14px] ">
-                          {project.name}
-                        </h3>
-                      </Link>
-                      <StarIcon
-                        className={`cursor-pointer transition-colors ${
-                          project.isFavorite
-                            ? "text-yellow-400"
-                            : "text-gray-400 hover:text-gray-500"
-                        }`}
-                        onClick={() => handleRating(project.id)}
-                      />
-                    </div>
-                    <p className="text-gray-500 text-[12px]">{project.tag}</p>
-                  </div>
-                </div>
-                <div className="text-sm text-gray-500">
-                  Created {project.created}
-                </div>
-              </div>
-            ))}
-          </TabPanel>
-
-          {/* Tab for Favorite Projects */}
-          <TabPanel value="2" sx={{ p: 0 }}>
-            {paginatedFavoriteProjects.length > 0 ? (
-              paginatedFavoriteProjects.map((project) => (
+            {/* Tab for All Projects */}
+            <TabPanel value="1" sx={{ p: 0 }}>
+              {paginatedProjects.map((project) => (
                 <div
-                  className={`flex items-center justify-between p-3 border-b    transition-all ${theme === 'dark' ? "border-gray-700":"border-gray-300"}`} // dark:border-gray-700
+                  className={`flex items-center justify-between p-3 border-b   transition-all ${
+                    theme === "dark" ? "border-gray-700" : "border-gray-300"
+                  }`}
                   key={project.id}
                 >
                   <div className="flex items-center">
                     <div
-                      className={`text-xl w-10 h-10 flex justify-center items-center text-black rounded-md ${project.color}`} 
+                      className={`text-[24px] w-10 h-10 flex justify-center items-center text-black  rounded-md ${project.color}`}
                     >
                       {project.name.charAt(0)}
                     </div>
                     <div className="ml-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 ">
                         <Link
                           to={`/CurrentProject/${project.name}/${project.id}`}
                         >
-                          <h3 className="hover:underline cursor-pointer text-base text-[14px]">
+                          <h3 className="hover:underline cursor-pointer text-[14px] ">
                             {project.name}
                           </h3>
                         </Link>
@@ -179,34 +140,80 @@ const Projects = () => {
                     Created {project.created}
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="p-6 text-center">No favorite projects yet.</p>
-            )}
-          </TabPanel>
+              ))}
+            </TabPanel>
 
-          {/* Tab for Daily Allocation */}
-          <TabPanel value="3" className="p-9 text-center">
-            Daily allocation content goes here.
-          </TabPanel>
-        </TabContext>
+            {/* Tab for Favorite Projects */}
+            <TabPanel value="2" sx={{ p: 0 }}>
+              {paginatedFavoriteProjects.length > 0 ? (
+                paginatedFavoriteProjects.map((project) => (
+                  <div
+                    className={`flex items-center justify-between p-3 border-b    transition-all ${
+                      theme === "dark" ? "border-gray-700" : "border-gray-300"
+                    }`} // dark:border-gray-700
+                    key={project.id}
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className={`text-xl w-10 h-10 flex justify-center items-center text-black rounded-md ${project.color}`}
+                      >
+                        {project.name.charAt(0)}
+                      </div>
+                      <div className="ml-3">
+                        <div className="flex items-center gap-2">
+                          <Link
+                            to={`/CurrentProject/${project.name}/${project.id}`}
+                          >
+                            <h3 className="hover:underline cursor-pointer text-base text-[14px]">
+                              {project.name}
+                            </h3>
+                          </Link>
+                          <StarIcon
+                            className={`cursor-pointer transition-colors ${
+                              project.isFavorite
+                                ? "text-yellow-400"
+                                : "text-gray-400 hover:text-gray-500"
+                            }`}
+                            onClick={() => handleRating(project.id)}
+                          />
+                        </div>
+                        <p className="text-gray-500 text-[12px]">
+                          {project.tag}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Created {project.created}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="p-6 text-center">No favorite projects yet.</p>
+              )}
+            </TabPanel>
 
-        {/* Use the CommonPagination component */}
-        {(selectedTab === "1" ? projects.length : favoriteProjects.length) >
-          0 && (
-          <CommonPagination
-            page={page}
-            rowsPerPage={rowsPerPage}
-            totalCount={
-              selectedTab === "1" ? projects.length : favoriteProjects.length
-            }
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            perPageOptions={PER_PAGE_OPTIONS}
-          />
-        )}
+            {/* Tab for Daily Allocation */}
+            <TabPanel value="3" className="p-9">
+              <DailyAllocation />
+            </TabPanel>
+          </TabContext>
+
+          {/* Use the CommonPagination component */}
+          {(selectedTab === "1" ? projects.length : favoriteProjects.length) >
+            0 && (
+            <CommonPagination
+              page={page}
+              rowsPerPage={rowsPerPage}
+              totalCount={
+                selectedTab === "1" ? projects.length : favoriteProjects.length
+              }
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              perPageOptions={PER_PAGE_OPTIONS}
+            />
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 };

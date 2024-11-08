@@ -16,12 +16,12 @@ const ThemeToggle = () => {
         {theme === "dark" ? (
           <>
             <FaSun className="text-yellow-400 " size={20} />
-            <span>Light Mode</span>
+            {/* <span>Light Mode</span> */}
           </>
         ) : (
           <>
             <FaMoon className="text-gray-200" size={20} />
-            <span>Dark Mode</span>
+            {/* <span>Dark Mode</span> */}
           </>
         )}
       </button>
