@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Search from '../common/Search';
 import ThemeToggle from '../common/ThemeToggle';
 import { ThemeContext } from '../pages/ThemeContext'; // Import ThemeContext
+import CustomSidebar from '../common/CustomSidebar';
 
 const Header = () => {
   const { theme } = useContext(ThemeContext); // Access theme value

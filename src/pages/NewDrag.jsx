@@ -15,7 +15,7 @@ const NewDrag = () => {
     {
       id: "0e2f0db1-5457-46b0-949e-8032d2f9997a",
       name: "In progress",
-      items: Array.from({ length: 20 }, (v, i) => ({
+      items: Array.from({ length: 200 }, (v, i) => ({
         id: crypto.randomUUID(),
         name: `TASK ${i + 1}`,
       })),
@@ -271,6 +271,7 @@ function StoreList({ name, items, id }) {
             </h3>
           )}
           <div className="mt-2">
+
             {items.map((item, index) => (
               <Draggable draggableId={item.id} index={index} key={item.id}>
                 {(provided) => (
@@ -280,7 +281,7 @@ function StoreList({ name, items, id }) {
                     ref={provided.innerRef}
                     className="bg-white p-2 mb-2 rounded shadow flex items-center justify-between w-[350px]"
                   >
-                    <span>{item.name}</span>
+                    <div>{item.name}</div>
                     <Checkbox
                       sx={{
                         padding: 0,

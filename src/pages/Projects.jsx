@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import CommonPagination from "../common/Pagination";
 import { PER_PAGE_OPTIONS, initialProjects } from "../utils/constant";
 import { ThemeContext } from "../pages/ThemeContext"; // Import ThemeContext
+import Header from "./Header";
 
 const Projects = () => {
   const [page, setPage] = useState(1);
@@ -52,7 +53,8 @@ const Projects = () => {
   };
 
   return (
-    
+    <div>
+      <Header />
     <div className="fadeOut">
       <div
         className={`px-9 pb-9  mx-auto  ${
@@ -204,6 +206,7 @@ const Projects = () => {
           />
         )}
       </div>
+    </div>
     </div>
   );
 };

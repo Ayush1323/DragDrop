@@ -9,6 +9,7 @@ import { ThemeContext } from "../pages/ThemeContext";
 const CustomSidebar = ({ selectedProject, onSelectProject }) => {
   const { theme } = useContext(ThemeContext); // Get the current theme from context
   const [open, setOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [internalSelectedProject, setInternalSelectedProject] =
     useState(selectedProject);
 
@@ -38,6 +39,10 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
     (project) => project !== internalSelectedProject
   );
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="flex justify-center items-start ">
       <div
@@ -58,7 +63,10 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
         </div>
 
         <div className={`flex items-center text-md ${!open && "hidden"}`}>
-          <img src="https://staging-tasks.mindinventory.net/static/media/mindInventoryLogo.140c672d.svg" alt="" />
+          <img
+            src="https://staging-tasks.mindinventory.net/static/media/mindInventoryLogo.140c672d.svg"
+            alt=""
+          />
           <div
             className={`font-semibold duration-200 ml-1.5  ${
               !open && "hidden"
@@ -87,7 +95,6 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                   {menu.title}
                 </span>
               </Link>
-
               <div className="mt-4">
                 <div className="text-[16px] font-semibold">
                   Current Projects
@@ -114,23 +121,50 @@ const CustomSidebar = ({ selectedProject, onSelectProject }) => {
                 </div>
               </div>
               <div className="mt-4">
-                <div className="text-[16px] font-semibold">All Projects</div>
-                <div>
-                  {allProjects.map((project, idx) => (
-                    <div
-                      key={idx}
-                      className={`familychange mt-2 p-2 rounded-lg cursor-pointer  text-[14px] 
-                        ${
-                          theme === "dark"
-                            ? "hover:bg-blue-950"
-                            : "hover:bg-gray-100"
-                        }`} // Hover state
-                      onClick={() => handleProjectClick(project)}
+                <div
+                  className="text-[16px] font-semibold flex items-center cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  <span
+                    className={`mr-2 transform transition-transform ${
+                      isOpen ? "" : "-rotate-90"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      class="h-4 w-4 shrink-0 duration-200"
                     >
-                      {project.name}
-                    </div>
-                  ))}
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                      ></path>
+                    </svg>
+                  </span>
+                  Favorite Projects
                 </div>
+
+                {isOpen && (
+                  <div className="mt-2 ">
+                    {allProjects.map((project, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex items-center p-2 rounded-lg cursor-pointer text-[14px] 
+                ${theme === "dark" ? "hover:bg-blue-950" : "hover:bg-white"}`}
+                        onClick={() => handleProjectClick(project)}
+                      >
+                        <div className="truncate px-[8px] py-[4px] ">
+                          {project.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}

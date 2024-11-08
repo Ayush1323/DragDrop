@@ -65,7 +65,7 @@ function DragDrop() {
       <div className="flex flex-col w-full overflow-hidden">
         <div className="flex justify-between items-center mr-9">
           <div
-            className={` px-9 pb-1 pt-4 text-2xl font-bold ${
+            className={` px-9 pb-1 pt-4  text-2xl font-bold ${
               theme === "dark" ? "text-white" : "text-gray-700"
             }`}
           >

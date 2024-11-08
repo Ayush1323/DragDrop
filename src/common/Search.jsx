@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { initialProjects } from "../utils/constant"; // assuming this contains the array of projects
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext } from "../pages/ThemeContext";
 
 const Search = () => {
+  const { theme } = useContext(ThemeContext); // Access theme value
   const [inputText, setInputText] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(-1); // For arrow key navigation
   const ref = useRef(null); // Create a ref for the component
@@ -59,7 +62,7 @@ const Search = () => {
 
   return (
     <div ref={ref}>
-      <div className="relative flex items-center justify-center focus-within:outline-none border border-gray-300 rounded-full overflow-hidden bg-white">
+      <div className={`relative flex items-center justify-center focus-within:outline-none border border-gray-300 rounded-full overflow-hidden bg-white `}>
         <input
           className={`focus:outline-none pl-5 ${
             inputText !== "" ? "" : "w-[228px]"
@@ -129,7 +132,7 @@ const Search = () => {
                     index === selectedIndex ? "bg-gray-100" : ""
                   }`}
                 >
-                  <p>{project.name}</p>
+                  <p className={`text-black`}>{project.name}</p>
                 </div>
               </Link>
             ))
