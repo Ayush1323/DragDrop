@@ -6,21 +6,18 @@ import { IconButton } from "@mui/material";
 import Save from "@mui/icons-material/Save";
 import RemoveCircleOutline from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
+import { initialProjects } from "../utils/constant";
 
 const DailyAllocation = () => {
   const [isSearchable, setIsSearchable] = useState(true);
-  const { theme } = useContext(ThemeContext); // Access theme value
+  const { theme } = useContext(ThemeContext);
 
   const statuses = [
     {
       color: "#F87171",
       description: "Currently occupied and engaged in live projects or hired.",
     },
-    {
-      color: "#4ADE80",
-      description:
-        'Available for live projects. Any time allocated to in-house projects will be marked as "Available for live projects".',
-    },
+    { color: "#4ADE80", description: "Available for live projects." },
     { color: "#9CA3AF", description: "Indicates that you are on leave." },
     { color: "rgb(192 132 252)", description: "Training and Internship." },
   ];
@@ -33,48 +30,123 @@ const DailyAllocation = () => {
       note: "",
       role: "--",
       until: "--",
-      hours: "00:00",
+      hours: "",
       tentative: false,
       updatedBy: "---",
     },
   ]);
+  console.log(rows);
 
-  // Handle change events for each input
+  // Handle input changes for each field
   const handleInputChange = (id, field, value) => {
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === id ? { ...row, [field]: value } : row))
     );
   };
 
-  // Add a new row
+  // Check if the current row is fully filled
+  const isRowComplete = (row) => {
+    return row.project && row.note && row.hours;
+  };
+
+  // Add a new row if the last row is complete, and don't include the user again
   const addRow = () => {
+    // Check if the user is already set in the first row
+    const user = rows[0].user;
+
+    // Calculate the next available ID by considering the current rows
+    const newRowId = Math.max(...rows.map((row) => row.id)) + 1;
+
+    // Create a new row with the calculated ID
     const newRow = {
-      id: rows.length + 1,
-      user: { name: "", role: "", initials: "" },
+      id: newRowId,
+      user: user,
       project: "",
       note: "",
       role: "--",
       until: "--",
-      hours: "00:00",
+      hours: "",
       tentative: false,
       updatedBy: "---",
     };
+
     setRows([...rows, newRow]);
   };
 
-  // Remove a row
+  // Remove a row, but allow removal only if there is more than one row
   const removeRow = (id) => {
-    setRows(rows.filter((row) => row.id !== id));
+    if (rows.length > 1) {
+      const updatedRows = rows.filter((row) => row.id !== id);
+
+      // Reassign IDs to keep them sequential after removal
+      const reIndexedRows = updatedRows.map((row, index) => ({
+        ...row,
+        id: index + 1,
+      }));
+
+      setRows(reIndexedRows);
+    }
+  };
+
+  // Filter projects already selected in other rows
+  const getAvailableProjects = () => {
+    const selectedProjects = rows
+      .map((row) => row.project?.value)
+      .filter(Boolean);
+    return initialProjects
+      .filter((project) => !selectedProjects.includes(project.name))
+      .map((project) => ({ value: project.name, label: project.name }));
+  };
+
+  const [timeValue, setTimeValue] = useState("00:00");
+
+  const handleTimeChange = (id, value) => {
+    // Remove non-numeric characters (except the colon) as the user types
+    const cleanedValue = value.replace(/[^0-9:]/g, "");
+
+    // Split the value into hours and minutes around the ":"
+    let [hours, minutes] = cleanedValue.split(":");
+
+    // If hours are provided, limit them to 2 digits and ensure it doesn't exceed 23
+    if (hours) {
+      hours = hours.slice(0, 2); // Ensure only up to two digits for hours
+    }
+
+    // If minutes are provided, limit them to 2 digits and ensure it doesn't exceed 59
+    if (minutes) {
+      minutes = minutes.slice(0, 2); // Ensure only up to two digits for minutes
+    }
+
+    // Ensure hours and minutes are two digits long, if present
+    hours = hours ? hours.padStart(2, "0") : "";
+    minutes = minutes ? minutes.padStart(2, "0") : "";
+
+    // If hours or minutes exceed valid ranges, they are clipped (no default to 23 or 59)
+    if (hours && parseInt(hours, 10) > 23) {
+      hours = "23"; // Clip hours to 23 if it exceeds range
+    }
+    if (minutes && parseInt(minutes, 10) > 59) {
+      minutes = "59"; // Clip minutes to 59 if it exceeds range
+    }
+
+    // Combine hours and minutes back into a formatted time string
+    const formattedValue = `${hours}:${minutes}`;
+
+    // Update the state with the new formatted value
+    setTimeValue(formattedValue);
+
+    // Call handleInputChange with the formatted value
+    handleInputChange(id, "hours", formattedValue);
   };
 
   return (
-    <div>
-      <div className="flex justify-between p-3 mr-4 border border-gray-200">
-        <div className=" ">
+    <div className="px-9">
+      <div className="flex justify-between p-3 border border-gray-200">
+        <div>
           {statuses.map((status, index) => (
             <div key={index} className="flex items-center mb-2">
               <span
-                className="inline-block w-[50px] h-4 mr-2 "
+                className="inline-block w-[50px] h-4 mr-2"
                 style={{ backgroundColor: status.color }}
               ></span>
               <p className="text-[14px]">{status.description}</p>
@@ -89,29 +161,36 @@ const DailyAllocation = () => {
       </div>
 
       {/* Table section */}
-      <div className="overflow-x-auto mt-2">
+      <div className="overflow-x-auto mt-2 inline-block min-w-full pt-2 align-middle w-full overflow-auto h-auto min-h-[calc(100vh-65px)] scrollable-no-scrollbar">
         <table className="border border-gray-300 text-sm">
           <thead>
             <tr>
-              <th className="flex flex-col w-[250px] border-0 relative m-0 p-0 ">
+              <th className="flex flex-col w-[250px] border-0 relative m-0 p-0">
                 <div>
-                  <div className="bg-green-400 w-full h-[8px]"></div>
-                  {rows.map((row, rowIndex) => (
-                    <div
-                      className="flex items-center space-x-2 px-3 p-2"
-                      key={row.id}
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center text-white font-semibold">
-                        {row.user.initials}
-                      </div>
-                      <div>
-                        <div className="font-semibold">{row.user.name}</div>
-                        <div className="text-xs text-gray-500 flex justify-start">
-                          {row.user.role}
+                  <div
+                    style={{ backgroundColor: statuses[0].color }}
+                    className="w-full h-[8px]"
+                  ></div>
+                  {rows.map(
+                    (row, index) =>
+                      // Only render the user info in the first row
+                      index === 0 && (
+                        <div
+                          className="flex items-center space-x-2 px-3 p-2"
+                          key={row.id}
+                        >
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center text-white font-semibold">
+                            {row.user.initials}
+                          </div>
+                          <div>
+                            <div className="font-semibold">{row.user.name}</div>
+                            <div className="flex justify-start text-xs text-gray-500">
+                              {row.user.role}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      )
+                  )}
                 </div>
               </th>
 
@@ -126,41 +205,50 @@ const DailyAllocation = () => {
               </th>
               <th className="p-2 border-r">Tentative</th>
               <th className="p-2 border-r">Last updated by/on</th>
-              <th className={`p-2 sticky right-0 ${theme==="dark" ?"":"bg-white" } z-10`}>Action</th>
+              <div className="flex justify-center  border  sticky right-0 pt-[23px] pb-[32px] z-10 bg-white">
+              <th
+                className={`${
+                  theme === "dark" ? "bg-[#1E293B]" : "bg-white"
+                } `}
+              >
+                Action
+              </th>
+              </div>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {rows.map((row, index) => (
               <tr key={row.id}>
                 <td></td>
                 <td className="py-3 px-4 border border-b-0 relative">
                   <Select
-                    className="z-50"
                     classNamePrefix="select"
-                    placeholder="" // Sets placeholder to an empty string
+                    placeholder=""
                     isSearchable={isSearchable}
-                    menuPortalTarget={document.body} // Ensures dropdown is rendered at the body level
+                    menuPortalTarget={document.body}
+                    options={getAvailableProjects()}
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                       menu: (provided) => ({
                         ...provided,
                         zIndex: 9999,
+                        position: "absolute",
                         width: "250px",
-                      }), // Fixed width for dropdown
+                        marginTop: 0,
+                      }),
                       control: (provided, state) => ({
                         ...provided,
                         width: "250px",
                         borderColor: state.isFocused
                           ? "black"
-                          : provided.borderColor, // Sets border color to black on focus
+                          : provided.borderColor,
                         boxShadow: state.isFocused
                           ? "none"
-                          : provided.boxShadow, // Removes default blue outline
-                        "&:hover": {
-                          borderColor: "black", // Ensures border remains black on hover
-                        },
+                          : provided.boxShadow,
+                        "&:hover": { borderColor: "black" },
                       }),
                     }}
+                    value={row.project}
                     onChange={(selectedOption) =>
                       handleInputChange(row.id, "project", selectedOption)
                     }
@@ -185,12 +273,11 @@ const DailyAllocation = () => {
                   <input
                     type="text"
                     className="border outline-none rounded-md p-2 text-[16px] font-medium mx-1.5 w-[75px]"
-                    value="00:00"
-                    onChange={(e) =>
-                      handleInputChange(row.id, "hours", e.target.value)
-                    }
+                    value={timeValue}
+                    onChange={(e) => handleTimeChange(row.id, e.target.value)}
                   />
                 </td>
+
                 <td className="py-3 px-4 border border-b-0">
                   <Switch
                     checked={row.tentative}
@@ -204,20 +291,36 @@ const DailyAllocation = () => {
                     handleDiameter={20}
                   />
                 </td>
-                <td className="py-3 border border-b-0 ">
+                <td className="py-3 border border-b-0">
                   <div className="p-[15px] text-[14px]">{row.updatedBy}</div>
                 </td>
-                <td className={`py-3 px-4 text-center space-x-2 sticky right-0  z-10 border ${theme==="dark" ?"":"bg-white" } border-gray-300`}>
-                  <IconButton onClick={() => console.log("Save clicked")}>
-                    <Save />
-                  </IconButton>
-                  <IconButton onClick={() => removeRow(row.id)}>
-                    <RemoveCircleOutline />
-                  </IconButton>
-                  <IconButton onClick={addRow}>
-                    <AddCircleOutline />
-                  </IconButton>
-                </td>
+                <div className="sticky right-0 ">
+                  <td
+                    className={`py-3 px-4 text-center sticky right-0 z-10 border ${
+                      theme === "dark" ? "bg-[#1E293B]" : "bg-white"
+                    } `}
+                  >
+                    <div className="flex py-3">
+                      <IconButton onClick={() => console.log("Save clicked")}>
+                        <Save />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => removeRow(row.id)}
+                        disabled={rows.length === 1 && index === 0}
+                      >
+                        <RemoveCircleOutline />
+                      </IconButton>
+                      {index === rows.length - 1 && (
+                        <IconButton
+                          onClick={addRow}
+                          disabled={!isRowComplete(rows[rows.length - 1])}
+                        >
+                          <AddCircleOutline />
+                        </IconButton>
+                      )}
+                    </div>
+                  </td>
+                </div>
               </tr>
             ))}
           </tbody>

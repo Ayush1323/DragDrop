@@ -83,3 +83,49 @@
   </tbody>
 </table>
 </div>
+
+
+
+
+
+const [timeValue, setTimeValue] = useState("00:00");
+
+const handleTimeChange = (id, value) => {
+  // Split the value into hours and minutes around the ':'
+  let [hours, minutes] = value.split(":");
+
+  // Remove non-numeric characters and limit hours to 2 digits
+  hours = hours.replace(/[^0-9]/g, "").slice(0, 2);
+  // Ensure hours do not exceed 23
+  hours = Math.min(parseInt(hours, 10) || 0, 23).toString();
+
+  // Remove non-numeric characters and limit minutes to 2 digits
+  minutes = (minutes || "").replace(/[^0-9]/g, "").slice(0, 2);
+  // Ensure minutes do not exceed 59
+  minutes = Math.min(parseInt(minutes, 10) || 0, 59).toString();
+
+  // Reassemble the time with the ':' in the middle
+  const formattedValue = `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+
+  setTimeValue(formattedValue);
+
+  // Call handleInputChange with the formatted value
+  handleInputChange(id, "hours", formattedValue);
+};
+
+
+<td className="py-3 px-1 border border-b-0">
+<input
+  type="text"
+  className="border outline-none rounded-md p-2 text-[16px] font-medium mx-1.5 w-[75px]"
+  value={timeValue}
+  onChange={(e) => handleTimeChange(row.id, e.target.value)}
+/>
+</td>
+
+
+
+
+
+
+

@@ -4,9 +4,11 @@ import './App.css';
 import DragDrop from './pages/DragDrop';
 import Board from './pages/Board';
 import Projects from './pages/Projects';
+import { useEffect } from 'react';
 import NewDrag from './pages/NewDrag';
 
 function App() {
+
   const location = useLocation();
 
   return (
