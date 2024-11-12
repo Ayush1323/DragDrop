@@ -294,13 +294,13 @@ const DailyAllocation = () => {
                 <td className="py-3 border border-b-0">
                   <div className="p-[15px] text-[14px]">{row.updatedBy}</div>
                 </td>
-                <div className="sticky right-0 ">
+                <div className="sticky right-0  ">
                   <td
-                    className={`py-3 px-4 text-center sticky right-0 z-10 border ${
+                    className={`py-3 px-4 text-center sticky right-0 z-10 border w-40 ${
                       theme === "dark" ? "bg-[#1E293B]" : "bg-white"
                     } `}
                   >
-                    <div className="flex py-3">
+                    <div className="flex py-5 ">
                       <IconButton onClick={() => console.log("Save clicked")}>
                         <Save />
                       </IconButton>
