@@ -17,7 +17,10 @@ const DailyAllocation = () => {
       color: "#F87171",
       description: "Currently occupied and engaged in live projects or hired.",
     },
-    { color: "#4ADE80", description: "Available for live projects." },
+    {
+      color: "#4ADE80",
+      description: `Available for live projects. Any time allocated to in-house projects will be marked as "Available for live projects".`,
+    },
     { color: "#9CA3AF", description: "Indicates that you are on leave." },
     { color: "rgb(192 132 252)", description: "Training and Internship." },
   ];
@@ -35,7 +38,7 @@ const DailyAllocation = () => {
       updatedBy: "---",
     },
   ]);
-  console.log(rows);
+  // console.log(rows);
 
   // Handle input changes for each field
   const handleInputChange = (id, field, value) => {
@@ -72,6 +75,7 @@ const DailyAllocation = () => {
 
     setRows([...rows, newRow]);
   };
+  console.log(rows);
 
   // Remove a row, but allow removal only if there is more than one row
   const removeRow = (id) => {
@@ -99,57 +103,44 @@ const DailyAllocation = () => {
   };
 
   const [timeValue, setTimeValue] = useState("00:00");
-
   const handleTimeChange = (id, value) => {
-    // Remove non-numeric characters (except the colon) as the user types
-    const cleanedValue = value.replace(/[^0-9:]/g, "");
-
-    // Split the value into hours and minutes around the ":"
-    let [hours, minutes] = cleanedValue.split(":");
-
-    // If hours are provided, limit them to 2 digits and ensure it doesn't exceed 23
-    if (hours) {
-      hours = hours.slice(0, 2); // Ensure only up to two digits for hours
-    }
-
-    // If minutes are provided, limit them to 2 digits and ensure it doesn't exceed 59
-    if (minutes) {
-      minutes = minutes.slice(0, 2); // Ensure only up to two digits for minutes
-    }
-
-    // Ensure hours and minutes are two digits long, if present
-    hours = hours ? hours.padStart(2, "0") : "";
-    minutes = minutes ? minutes.padStart(2, "0") : "";
-
-    // If hours or minutes exceed valid ranges, they are clipped (no default to 23 or 59)
-    if (hours && parseInt(hours, 10) > 23) {
-      hours = "23"; // Clip hours to 23 if it exceeds range
-    }
-    if (minutes && parseInt(minutes, 10) > 59) {
-      minutes = "59"; // Clip minutes to 59 if it exceeds range
-    }
-
-    // Combine hours and minutes back into a formatted time string
-    const formattedValue = `${hours}:${minutes}`;
-
-    // Update the state with the new formatted value
-    setTimeValue(formattedValue);
-
-    // Call handleInputChange with the formatted value
-    handleInputChange(id, "hours", formattedValue);
-  };
-
+    // Keep only the first 4 digits and remove other characters
+    const cleanedValue = value.replace(/[^0-9]/g, "").slice(0, 4);
+    // Extract hours and minutes from the cleaned value using regex
+    let formattedValue = cleanedValue.replace(
+      /^(\d{0,2})(\d{0,2})?$/,
+      (match, h, m) => {
+        // Ensure hours and minutes don't exceed their limits
+        h = Math.min(23, h || 0)
+        .toString()
+        .padStart(2, "0");
+        m = Math.min(59, m || 0)
+        .toString()
+        .padStart(2, "0");
+        return `${h}:${m}`;
+      }
+      );
+      // Update the state with the formatted value
+      setTimeValue(formattedValue);
+      
+      // Call handleInputChange with the formatted value
+      handleInputChange(id, "hours", formattedValue);
+    };
+    console.log(timeValue);
+    
   return (
     <div className="px-9">
       <div className="flex justify-between p-3 border border-gray-200">
         <div>
           {statuses.map((status, index) => (
             <div key={index} className="flex items-center mb-2">
-              <span
-                className="inline-block w-[50px] h-4 mr-2"
+              <div
+                className=" w-[50px] h-4 mr-2"
                 style={{ backgroundColor: status.color }}
-              ></span>
-              <p className="text-[14px]">{status.description}</p>
+              ></div>
+              <div className="text-[14px] max-lg:w-96">
+                {status.description}
+              </div>
             </div>
           ))}
         </div>
@@ -205,14 +196,18 @@ const DailyAllocation = () => {
               </th>
               <th className="p-2 border-r">Tentative</th>
               <th className="p-2 border-r">Last updated by/on</th>
-              <div className="flex justify-center  border  sticky right-0 pt-[23px] pb-[32px] z-10 bg-white">
-              <th
-                className={`${
+              <div
+                className={`flex justify-center  border  sticky right-0 pt-[23px] pb-[32px] z-10 ${
                   theme === "dark" ? "bg-[#1E293B]" : "bg-white"
                 } `}
               >
-                Action
-              </th>
+                <th
+                  className={`${
+                    theme === "dark" ? "bg-[#1E293B]" : "bg-white"
+                  } `}
+                >
+                  Action
+                </th>
               </div>
             </tr>
           </thead>
@@ -222,6 +217,7 @@ const DailyAllocation = () => {
                 <td></td>
                 <td className="py-3 px-4 border border-b-0 relative">
                   <Select
+                    autoFocus
                     classNamePrefix="select"
                     placeholder=""
                     isSearchable={isSearchable}

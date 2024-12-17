@@ -129,3 +129,39 @@ const handleTimeChange = (id, value) => {
 
 
 
+// };
+// const [timeValue, setTimeValue] = useState("00:00");
+
+// const handleTimeChange = (id, value, event) => {
+//   const inputElement = event.target;
+//   let cursorPosition = inputElement.selectionStart;
+
+//   // Keep only the first 4 digits and remove other characters
+//   const cleanedValue = value.replace(/[^0-9]/g, "").slice(0, 4);
+
+//   // Extract hours and minutes from the cleaned value using regex
+//   let formattedValue = cleanedValue.replace(
+//     /^(\d{0,2})(\d{0,2})?$/,
+//     (match, h, m) => {
+//       // Ensure hours and minutes don't exceed their limits
+//       h = Math.min(23, h || 0)
+//         .toString()
+//         .padStart(2, "0");
+//       m = Math.min(59, m || 0)
+//         .toString()
+//         .padStart(2, "0");
+//       return `${h}:${m}`;
+//     }
+//   );
+
+//   // Update the state with the formatted value
+//   setTimeValue(formattedValue);
+
+//   // Adjust the cursor position to move character by character, accounting for the colon
+//   if (cursorPosition >= 2) cursorPosition += 1; // Adjust for colon
+//   inputElement.setSelectionRange(cursorPosition, cursorPosition);
+
+//   // Call handleInputChange with the formatted value
+//   handleInputChange(id, "hours", formattedValue);
+// };
+
